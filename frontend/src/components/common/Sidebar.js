@@ -9,17 +9,17 @@ import { baseUrl } from "../../constant/url";
 import { useMutation, useQueries, useQueryClient, useQuery } from "@tanstack/react-query";
 
 const Sidebar = () => {
-	
-	
+
+
 	const queryClient = useQueryClient();
 	const { mutate: logout } = useMutation({
 		mutationFn: async () => {
 			try {
 				const res = await fetch(`${baseUrl}/api/auth/logout`, {
 					method: "POST",
-					credentials : "include",
-					headers : {
-						"Content-Type" : "application/json"
+					credentials: "include",
+					headers: {
+						"Content-Type": "application/json"
 					}
 				});
 				const data = await res.json();
@@ -33,7 +33,7 @@ const Sidebar = () => {
 		onSuccess: () => {
 			toast.success("Logout Success")
 			queryClient.invalidateQueries({
-				queryKey : ["authUser"]
+				queryKey: ["authUser"]
 			})
 		},
 		onError: () => {
@@ -41,7 +41,7 @@ const Sidebar = () => {
 		},
 	});
 
-	const{data:authUser}=useQuery({queryKey : ["authUser"]})
+	const { data: authUser } = useQuery({ queryKey: ["authUser"] })
 	console.log(authUser); // Check if authUser is undefined or missing username
 	console.log(authUser?.username); // Check if username is undefined
 
@@ -88,22 +88,21 @@ const Sidebar = () => {
 					>
 						<div className='avatar hidden md:inline-flex'>
 							<div className='w-8 rounded-full'>
-								<img src={ authUser.profileImg || "/avatar-placeholder.png"} />
+								<img src={authUser.profileImg || "/avatar-placeholder.png"} />
 							</div>
 						</div>
-						<div className='flex justify-between flex-1'>
-							<div className='hidden md:block w-8'>
-								<p className='text-dark font-bold text-md w-20 truncate'>{authUser?.fullName}</p>
-								<p className='text-slate-500 text-sm'>@{authUser?.userName}</p>
+						<div className='flex justify-between md:justify-start'>
+							<div className='w-10'>
+								<p className='text-dark font-bold text-md w-20 truncate md:block'>{authUser?.fullName}</p>
+								<p className='text-slate-500 text-sm md:block'>@{authUser?.userName}</p>
 								<br></br>
-								<BiLogOut className='w-5 h-5 cursor-pointer'
-								onClick={(e)=>{
-									e.preventDefault();
-									logout();
-								}}
+								<BiLogOut className='w-8 h-8 cursor-pointer'
+									onClick={(e) => {
+										e.preventDefault();
+										logout();
+									}}
 								/>
 							</div>
-							
 						</div>
 					</Link>
 				)}
